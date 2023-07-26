@@ -1,21 +1,38 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
+
+// final emailController = TextFormFieldController();
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  // ignore: override_on_non_overriding_member
+  // @override
+  void _onLoginPressed() {
+    // Here, you can implement your login logic.
+    // For example, you might call an API to authenticate the user.
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    // Add your authentication logic here...
+
+    // For now, let's just print the user's email and password for testing purposes.
+    print('Email: $email');
+    print('Password: $password');
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Textme'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -42,25 +59,28 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 24.0),
             ElevatedButton(
-              onPressed: _onLoginPressed,
+              // style:
+              // onPressed: _onLoginPressed,
+              onPressed: () {
+                FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: _emailController.text.trim(),
+                    password: _passwordController.text.trim());
+              },
               child: const Text('Login'),
+            ),
+            ElevatedButton(
+              // style:
+              // onPressed: _onLoginPressed,
+              onPressed: () {
+                FirebaseAuth.instance.createUserWithEmailAndPassword(
+                    email: _emailController.text.trim(),
+                    password: _passwordController.text.trim());
+              },
+              child: const Text('Register'),
             ),
           ],
         ),
       ),
     );
-  }
-
-  void _onLoginPressed() {
-    // Here, you can implement your login logic.
-    // For example, you might call an API to authenticate the user.
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    // Add your authentication logic here...
-
-    // For now, let's just print the user's email and password for testing purposes.
-    print('Email: $email');
-    print('Password: $password');
   }
 }
